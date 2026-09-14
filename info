@@ -1,0 +1,14 @@
+Where you are now
+
+You've built up a real toolkit across these projects:
+
+Core workflow (init/plan/apply/destroy)
+Variables, .tfvars, environment variables, precedence rules
+IAM users vs. roles, assume-role pattern
+Full VPC networking (public/private subnets, IGW, NAT instance, routing)
+RDS, S3, security groups, VPC endpoints
+Remote state (S3 backend, drift, multi-project state organization)
+Import (bringing manual resources under Terraform)
+Secrets via Vault
+Resource protection (prevent_destroy, deletion_protection)
+Modules (reusable, parameterized infrastructure)
