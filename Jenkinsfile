@@ -10,6 +10,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         TF_IN_AUTOMATION    = 'true'   // tells Terraform it's running non-interactively
+        TF_VAR_assume_role_arn = 'arn:aws:iam::434661699668:role/terraform-execution-role'
     }
 
     parameters {
