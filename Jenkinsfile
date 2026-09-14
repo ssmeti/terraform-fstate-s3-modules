@@ -31,43 +31,35 @@ pipeline {
 
         stage('Terraform Format Check') {
             steps {
-                dir('fifth-project') {
                     sh 'terraform fmt -check -recursive'
-                }
             }
         }
 
         stage('Terraform Init') {
             steps {
-                dir('fifth-project') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-terraform-creds'
                     ]]) {
                         sh 'terraform init -input=false'
                     }
-                }
             }
         }
 
         stage('Terraform Validate') {
             steps {
-                dir('fifth-project') {
                     sh 'terraform validate'
-                }
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                dir('fifth-project') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-terraform-creds'
                     ]]) {
                         sh 'terraform plan -input=false -out=tfplan'
                     }
-                }
             }
         }
 
@@ -87,7 +79,6 @@ pipeline {
                 expression { params.ACTION == 'apply' }
             }
             steps {
-                dir('fifth-project') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-terraform-creds'
@@ -95,7 +86,6 @@ pipeline {
                         sh 'terraform apply -input=false tfplan'
                     }
                 }
-            }
         }
 
         stage('Terraform Destroy') {
@@ -103,7 +93,6 @@ pipeline {
                 expression { params.ACTION == 'destroy' }
             }
             steps {
-                dir('fifth-project') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-terraform-creds'
@@ -111,15 +100,12 @@ pipeline {
                         sh 'terraform destroy -input=false -auto-approve'
                     }
                 }
-            }
         }
     }
 
     post {
         always {
-            dir('fifth-project') {
                 archiveArtifacts artifacts: 'tfplan', allowEmptyArchive: true
-            }
         }
         failure {
             echo 'Terraform pipeline failed — check the stage logs above.'
